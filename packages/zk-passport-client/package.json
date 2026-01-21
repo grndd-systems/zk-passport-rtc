@@ -1,0 +1,73 @@
+{
+  "name": "@grndd-systems/zk-passport-client",
+  "version": "1.0.0",
+  "description": "High-level client library for zk-passport with WebRTC and contract integration",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "zk-passport",
+    "webrtc",
+    "zero-knowledge",
+    "blockchain",
+    "passport",
+    "proof",
+    "firebase"
+  ],
+  "author": "GRNDD Systems",
+  "license": "MIT",
+  "peerDependencies": {
+    "@grndd-systems/ts-firebase-rtc": "^1.0.0",
+    "ethers": "^6.0.0",
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@grndd-systems/ts-firebase-rtc": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.7",
+    "ethers": "^6.16.0",
+    "firebase": "^12.6.0",
+    "react": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}
