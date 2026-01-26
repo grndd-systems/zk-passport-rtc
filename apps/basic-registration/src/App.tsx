@@ -4,7 +4,7 @@ import { useWebRTCWithFirebase } from '@grndd-systems/ts-firebase-rtc/react'
 import { generatePeerId } from '@grndd-systems/ts-firebase-rtc'
 import { ContractClient, isValidRegistrationProofData, safeBigInt } from '@grndd-systems/zk-passport-client'
 import { JsonRpcProvider, BrowserProvider } from 'ethers'
-import { firebaseConfig, contractAddresses, rpcUrl, chainId } from './config'
+import { firebaseConfig, firebaseApp, firebaseDatabase, contractAddresses, rpcUrl, chainId } from './config'
 
 interface RegistrationProofData {
   certificatesRoot: `0x${string}`
@@ -33,6 +33,8 @@ export default function App() {
   // WebRTC connection
   const { state, createOffer, onMessage, send } = useWebRTCWithFirebase({
     firebaseConfig,
+    firebaseApp,
+    firebaseDatabase,
     webrtcConfig: { debug: true },
   })
 

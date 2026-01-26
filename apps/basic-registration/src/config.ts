@@ -1,5 +1,5 @@
-// Ensure Firebase database module is included in bundle
-import 'firebase/database'
+import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -10,6 +10,10 @@ export const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
+
+// Initialize Firebase app and database once
+export const firebaseApp = initializeApp(firebaseConfig)
+export const firebaseDatabase = getDatabase(firebaseApp)
 
 export const contractAddresses = {
   registration: import.meta.env.VITE_REGISTRATION2_ADDRESS as `0x${string}`,
