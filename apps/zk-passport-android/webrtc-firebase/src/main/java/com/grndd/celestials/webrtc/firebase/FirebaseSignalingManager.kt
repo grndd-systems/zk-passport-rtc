@@ -235,6 +235,15 @@ class FirebaseSignalingManager(
 
     override suspend fun close() {
         log("Closing Firebase signaling manager")
+        // Don't sign out - keep auth alive for reconnection
+        isInitialized = false
+    }
+
+    /**
+     * Full shutdown including sign out
+     */
+    suspend fun shutdown() {
+        log("Shutting down Firebase signaling manager")
         auth?.signOut()
         auth = null
         database = null
