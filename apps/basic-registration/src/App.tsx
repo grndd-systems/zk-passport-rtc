@@ -220,7 +220,7 @@ export default function App() {
           const dgCommit = safeBigInt(registration.dgCommit, 'dgCommit')
           const passportKey = safeBigInt(registration.passportKey, 'passportKey')
 
-          if (!identityKey || !dgCommit || !passportKey) {
+          if (identityKey === null || dgCommit === null || passportKey === null) {
             throw new Error('Failed to convert BigInt values')
           }
 

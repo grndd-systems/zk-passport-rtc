@@ -100,12 +100,48 @@ class WebRTCManager(
     }
 
     /**
+     * Reset connection state for a fresh start.
+     * Call this before connectToPeer when reconnecting.
+     */
+    suspend fun reset() {
+        log("=== RESETTING WebRTC state ===")
+
+        // Close existing data channel
+        dataChannel?.close()
+        dataChannel = null
+
+        // Close existing peer connection
+        peerConnection?.close()
+        peerConnection = null
+
+        // Cleanup previous Firebase session
+        remotePeerId?.let { peerId ->
+            try {
+                signalingManager.cleanupPeerSession(peerId)
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to cleanup previous session: ${e.message}")
+            }
+        }
+        remotePeerId = null
+
+        _connectionState.value = ConnectionState.Disconnected
+        _receivedMessages.value = emptyList()
+
+        log("✓ WebRTC state reset")
+    }
+
+    /**
      * Mobile connects to Desktop by scanning QR code with peerId
      *
      * @param scannedPeerId The peer ID from Desktop QR code
      */
     suspend fun connectToPeer(scannedPeerId: String) {
         try {
+            // Reset previous connection if any
+            if (remotePeerId != null) {
+                reset()
+            }
+
             log("=== STARTING CONNECTION to Desktop peer: $scannedPeerId ===")
             _connectionState.value = ConnectionState.Connecting
 
@@ -136,12 +172,24 @@ class WebRTCManager(
     }
 
     private fun createPeerConnection() {
-        val iceServers = config.iceServers.map { stunUrl ->
-            PeerConnection.IceServer.builder(stunUrl).createIceServer()
+        val iceServers = config.iceServers.map { iceConfig ->
+            PeerConnection.IceServer.builder(iceConfig.url).apply {
+                if (iceConfig.username != null && iceConfig.password != null) {
+                    setUsername(iceConfig.username)
+                    setPassword(iceConfig.password)
+                }
+            }.createIceServer()
         }
 
         val rtcConfig = PeerConnection.RTCConfiguration(iceServers).apply {
             sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN
+            // Use all candidates in parallel (STUN + TURN simultaneously)
+            iceTransportsType = PeerConnection.IceTransportsType.ALL
+            bundlePolicy = PeerConnection.BundlePolicy.MAXBUNDLE
+            // Gather candidates from all sources at once, don't wait for STUN to fail
+            continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY
+            // Prefer faster connection over optimal path
+            iceCandidatePoolSize = 1
         }
 
         peerConnection = peerConnectionFactory?.createPeerConnection(
@@ -177,12 +225,12 @@ class WebRTCManager(
                     log("⚡ ICE connection state changed: $newState")
                     when (newState) {
                         PeerConnection.IceConnectionState.CONNECTED -> {
-                            log("✓ ICE CONNECTION ESTABLISHED!")
-                            _connectionState.value = ConnectionState.Connected
+                            log("✓ ICE CONNECTION ESTABLISHED! Waiting for DataChannel...")
+                            // Don't set Connected here - wait for DataChannel to be OPEN
                         }
                         PeerConnection.IceConnectionState.FAILED -> {
                             Log.e(TAG, "✗ ICE CONNECTION FAILED")
-                            _connectionState.value = ConnectionState.Disconnected
+                            _connectionState.value = ConnectionState.Error("ICE connection failed")
                         }
                         PeerConnection.IceConnectionState.DISCONNECTED -> {
                             Log.w(TAG, "⚠ ICE CONNECTION DISCONNECTED")
@@ -218,8 +266,16 @@ class WebRTCManager(
 
             override fun onStateChange() {
                 log("Data channel state: ${dc.state()}")
-                if (dc.state() == DataChannel.State.OPEN) {
-                    _connectionState.value = ConnectionState.Connected
+                when (dc.state()) {
+                    DataChannel.State.OPEN -> {
+                        log("✓ DATA CHANNEL OPEN - Connection ready!")
+                        _connectionState.value = ConnectionState.Connected
+                    }
+                    DataChannel.State.CLOSED -> {
+                        log("Data channel closed")
+                        _connectionState.value = ConnectionState.Disconnected
+                    }
+                    else -> {}
                 }
             }
 
