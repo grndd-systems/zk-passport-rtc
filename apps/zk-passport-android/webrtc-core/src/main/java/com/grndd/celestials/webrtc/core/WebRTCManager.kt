@@ -183,6 +183,13 @@ class WebRTCManager(
 
         val rtcConfig = PeerConnection.RTCConfiguration(iceServers).apply {
             sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN
+            // Use all candidates in parallel (STUN + TURN simultaneously)
+            iceTransportsType = PeerConnection.IceTransportsType.ALL
+            bundlePolicy = PeerConnection.BundlePolicy.MAXBUNDLE
+            // Gather candidates from all sources at once, don't wait for STUN to fail
+            continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY
+            // Prefer faster connection over optimal path
+            iceCandidatePoolSize = 1
         }
 
         peerConnection = peerConnectionFactory?.createPeerConnection(
