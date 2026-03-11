@@ -1,5 +1,5 @@
 {
-  "name": "@grndd-systems/ts-firebase-rtc",
+  "name": "@grndd.systems/ts-firebase-rtc",
   "version": "1.0.0",
   "description": "Pluggable WebRTC library with Firebase signaling abstraction",
   "type": "module",

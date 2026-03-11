@@ -1,5 +1,5 @@
 {
-  "name": "@grndd-systems/basic-registration",
+  "name": "@grndd.systems/basic-registration",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,8 +11,8 @@
     "start": "npm run build && npm run preview -- --host"
   },
   "dependencies": {
-    "@grndd-systems/zk-passport-client": "workspace:*",
-    "@grndd-systems/ts-firebase-rtc": "workspace:*",
+    "@grndd.systems/zk-passport-client": "workspace:*",
+    "@grndd.systems/ts-firebase-rtc": "workspace:*",
     "ethers": "^6.16.0",
     "firebase": "^11.0.0",
     "qrcode.react": "^4.2.0",

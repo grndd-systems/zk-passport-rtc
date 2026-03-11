@@ -10,10 +10,10 @@ importers:
 
   apps/basic-registration:
     dependencies:
-      '@grndd-systems/ts-firebase-rtc':
+      '@grndd.systems/ts-firebase-rtc':
         specifier: workspace:*
         version: link:../../packages/ts-firebase-rtc
-      '@grndd-systems/zk-passport-client':
+      '@grndd.systems/zk-passport-client':
         specifier: workspace:*
         version: link:../../packages/zk-passport-client
       ethers:
@@ -83,7 +83,7 @@ importers:
 
   packages/zk-passport-client:
     devDependencies:
-      '@grndd-systems/ts-firebase-rtc':
+      '@grndd.systems/ts-firebase-rtc':
         specifier: workspace:*
         version: link:../ts-firebase-rtc
       '@types/node':

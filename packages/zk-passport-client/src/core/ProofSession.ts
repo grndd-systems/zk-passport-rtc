@@ -1,5 +1,5 @@
-import type { SignalingClient } from '@grndd-systems/ts-firebase-rtc/core';
-import { WebRTCConnection } from '@grndd-systems/ts-firebase-rtc/core';
+import type { SignalingClient } from '@grndd.systems/ts-firebase-rtc/core';
+import { WebRTCConnection } from '@grndd.systems/ts-firebase-rtc/core';
 import type {
   ProofSessionOptions,
   SessionState,

@@ -13,7 +13,7 @@ export default defineConfig({
   sourcemap: true,
   splitting: false,
   treeshake: true,
-  external: ['react', 'ethers', '@grndd-systems/zk-proof-rtc'],
+  external: ['react', 'ethers', '@grndd.systems/zk-proof-rtc'],
   esbuildOptions(options) {
     options.conditions = ['module'];
   },

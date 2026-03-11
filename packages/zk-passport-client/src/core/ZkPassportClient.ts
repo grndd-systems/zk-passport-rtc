@@ -1,5 +1,5 @@
-import { FirebaseSignalingClient } from '@grndd-systems/ts-firebase-rtc/core';
-import type { SignalingClient } from '@grndd-systems/ts-firebase-rtc/core';
+import { FirebaseSignalingClient } from '@grndd.systems/ts-firebase-rtc/core';
+import type { SignalingClient } from '@grndd.systems/ts-firebase-rtc/core';
 import type { ZkPassportClientConfig, ProofSessionOptions } from '../types';
 import { ContractClient } from '../contracts/ContractClient';
 import { ProofSession } from './ProofSession';

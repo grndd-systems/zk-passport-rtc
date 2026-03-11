@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
-import { useWebRTCWithFirebase } from '@grndd-systems/ts-firebase-rtc/react'
-import { generatePeerId } from '@grndd-systems/ts-firebase-rtc'
-import { ContractClient, isValidRegistrationProofData, safeBigInt } from '@grndd-systems/zk-passport-client'
+import { useWebRTCWithFirebase } from '@grndd.systems/ts-firebase-rtc/react'
+import { generatePeerId } from '@grndd.systems/ts-firebase-rtc'
+import { ContractClient, isValidRegistrationProofData, safeBigInt } from '@grndd.systems/zk-passport-client'
 import { JsonRpcProvider, BrowserProvider } from 'ethers'
 import { firebaseConfig, firebaseApp, firebaseDatabase, contractAddresses, rpcUrl, chainId } from './config'
 
